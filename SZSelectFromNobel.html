@@ -1,0 +1,310 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="SZSelectBasics.html">SELECT basics</a></li>
+							<li><a href="SZSelectNames.html">SELECT name</a></li>
+							<li><a href="SZSelectFromWorld.html">SELECT from world</a></li>
+							<li><a href="SZSelectFromNobel.html">SELECT from Nobel</a></li>
+							<li><a href="SZSelectWithinSelect.html">SELECT within SELECT</a></li>
+							<li><a href="SZSum&Count.html">SUM and COUNT</a></li>
+							<li><a href="SZJoins.html">JOIN</a></li>
+							<li><a href="SZMoreJoinOperations.html">More JOIN operations</a></li>
+							<li><a href="SZUsingNull.html">Using NULL</a></li>
+							<li><a href="SZNumericExamples.html">Numeric Examples</a></li>
+							<li><a href="SZCovid19WindowLag.html">COVID 19</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>SQLZOO Select from Nobel Practice Solutions.</h1>
+							<span class="image main"><img src="images/sqlzoo in.png" alt="" /></span>
+
+							
+
+							<h2>Winners from 1950</h2>
+							<h2>1.</h2>
+							<p>Change the query shown so that it displays Nobel prizes for 1950.</p>
+							<pre>
+								<code>
+SELECT yr, subject, winner
+FROM nobel
+WHERE yr = 1950
+								</code>
+							</pre>
+
+
+							<h2>1962 Literature</h2>
+							<h2>2.</h2>
+							<p>Show who won the 1962 prize for literature</p>
+							<pre>
+								<code>
+SELECT winner
+FROM nobel
+WHERE yr = 1962
+AND subject = 'literature'
+								</code>
+							</pre>
+
+
+
+							<h2>Albert Einstein</h2>
+							<h2>3.</h2>
+							<p>Show the year and subject that won 'Alber Einstein' his prize.</p>
+							<pre>
+								<code>
+SELECT yr, subject
+FROM nobel
+WHERE winner = 'Albert Einstein';
+								</code>
+							</pre>
+
+
+
+							<h2>Recent Peace Prizes</h2>
+							<h2>4.</h2>
+							<p>Give the name of the 'Peace' winners since the year 2000, including 2000.</p>
+							<pre>
+								<code>
+SELECT winner
+FROM nobel
+WHERE subject = 'peace'
+AND yr >= 2000;
+								</code>
+							</pre>
+
+
+
+							<h2>Literature in the 1980's</h2>
+							<h2>5.</h2>
+							<p>Show all details <b>(yr, subject, winner)</b> of the literature prize winners for 1980 to 1989 inclusive.</p>
+							<pre>
+								<code>
+SELECT yr, subject, winner
+FROM nobel
+WHERE subject = 'literature'
+AND yr >= 1980 AND yr <= 1989;
+								</code>
+							</pre>
+
+
+
+							<h2>Only Presidents</h2>
+							<h2>6.</h2>
+							<p>Show all details of the presidential winners:
+
+								Theodore Roosevelt,
+								Thomas Woodrow Wilson,
+								Jimmy Carter,
+								Barack Obama</p>
+							<pre>
+								<code>
+SELECT * FROM nobel
+WHERE winner IN ('Theodore Roosevelt',
+                  'Thomas Woodrow Wilson',
+                  'Jimmy Carter',
+'barack obama');
+								</code>
+							</pre>
+
+
+
+							<h2>John</h2>
+							<h2>7.</h2>
+							<p>Show the winners with the first name John</p>
+							<pre>
+								<code>
+select winner
+from nobel
+where winner like 'john%';
+								</code>
+							</pre>
+
+
+
+							<h2>Chemistry and Physics from different years</h2>
+							<h2>8.</h2>
+							<p><b>Show the year, subject, and name of physics winners for 1980 together with the chemistry winners for 1984.</b></p>
+							<pre>
+								<code>
+select yr, subject, winner
+from nobel
+where subject = 'physics' and yr = 1980
+or subject = 'chemistry' and yr = 1984;
+								</code>
+							</pre>
+
+
+
+							<h2>Exclude Chemists and Medics</h2>
+							<h2>9.</h2>
+							<p><b>Show the year, subject, and the name of winners for 1980 excluding chemistry and medicine</b></p>
+							<pre>
+								<code>
+select yr, subject, winner
+from nobel
+where yr = 1980
+and subject not in ('chemistry', 'medicine');
+								</code>
+							</pre>
+
+
+
+							<h2>Early Medice, Late Literature</h2>
+							<h2>10.</h2>
+							<p>Show year, subject, and name of people who won a 'Medicine' prize in an early year (before 1910, not including 1910) together with winners of a 'Literature' prize in a later year (after 2004, including 2004)</p>
+							<pre>
+								<code>
+select *
+from nobel
+where yr < 1910 and subject = 'medicine'
+or
+yr >= 2004 and subject = 'literature';
+								</code>
+							</pre>
+
+
+
+							<h2>Umlaut</h2>
+							<h2>11.</h2>
+							<p>Find all details of the prize won by PETER GRÜNBERG</p>
+							<pre>
+								<code>
+select *
+from nobel
+where winner = 'PETER GRÜNBERG';
+								</code>
+							</pre>
+
+
+
+							<h2>Apostrophe</h2>
+							<h2>12.</h2>
+							<p>Find all details of the prize won by EUGENE O'NEILL</p>
+							<pre>
+								<code>
+select *
+from nobel
+where winner = "EUGENE O'NEILL";
+								</code>
+							</pre>
+
+
+
+							<h2>Knight of the realm</h2>
+							<h2>13.</h2>
+							<p><b>List the winners, year and subject where the winner starts with Sir. Show the the most recent first, then by name order.</b></p>
+							<pre>
+								<code>
+select winner, yr, subject 
+from nobel
+where winner like'sir%'
+order by yr desc , winner;
+								</code>
+							</pre>
+
+
+
+							<h2>Chemistry and Physics last</h2>
+							<h2>14.</h2>
+							<p>The expression <b>subject IN ('chemistry','physics')</b> can be used as a value - it will be <b>0</b> or <b>1</b>.</p>
+							<p><b>Show the 1984 winners and subject ordered by subject and winner name; but list chemistry and physics last.</b></p>
+							<pre>
+								<code>
+SELECT winner, subject
+FROM nobel
+WHERE yr=1984
+ORDER BY subject IN ('Physics','Chemistry'),subject,winner;
+								</code>
+							</pre>
+
+
+
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

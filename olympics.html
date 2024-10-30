@@ -1,0 +1,229 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="houseModel.html">Housing Price Prediction Model</a></li>
+							<li><a href="usRealEstate.html">US Real Estate Sales</a></li>
+							<li><a href="olympics.html">Olympics Historical Data</a></li>
+							<li><a href="Pepsico.html">PepsiCo Products Data</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Olympics Historical Data EDA</h1>
+							<span class="image main"><img src="images/olympics in.jpg" alt="" /></span>
+						<section>	
+							<h2>Project Objectives</h2>
+							<p>Performing exploratory data analysis to visualize and understand trends and patterns and to present the gross over time.</p>
+						</section>
+							
+							<h2>About the dataset</h2>
+							<p>The Olympic Games are an international multi-sport event held every four years in which thousands of athletes from around the world participate in various sports competitions. The Olympics are one of the most significant and prestigious sporting events globally, promoting unity, friendship, and fair play among nations, Data Link<a href="https://www.kaggle.com/datasets/bhanupratapbiswas/olympic-data/data"> HERE</a>, Data usability is 10 and License is ODC:Public Domain Dedication, data dimensions (70000, 17).</p>
+							<p>  </p>
+							
+							<h2>columns discription</h2>
+							<pre>
+ID: Unique identifier for each athlete
+Name: Name of the athlete
+Sex: Gender of the athlete (M for male, F for female)
+Age: Age of the athlete
+Height: Height of the athlete in cm
+Weight: Weight of the athlete in kg
+Team: The team the athlete is representing
+NOC: National Olympic Committee 3-letter code
+Games: The specific Games the athlete participated in
+Year: The year of the Games
+Season: The season of the Games (Summer or Winter)
+City: The city where the Games were held
+Sport: The sport in which the athlete participated
+Event: The specific event within the sport
+Medal: The medal won by the athlete (if any)
+							</pre>
+							<p>  </p>
+							
+							<h2>Libraries used</h2>
+							<pre>
+								<code>
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+								</code>
+							</pre>
+							<p>  </p>
+							
+							<h2>data cleaning and preprocessing</h2>
+							<p>At first I merged the dataframe as it had countries names as 3 letter code, which can be tricky for some individuals, with another that had the 3 letter code with its corresponding country name.</p>
+								<h4>Duplicates Removal</h4>
+								<p>The 70000 row dataframe had 383 duplicate row that were removed.</p>
+								<p>  </p>
+
+								<h4>Handling Nulls</h4>
+								<p>The data had nulls within 6 of the 17 columns that i chose to ignore in some columns (notes), deleted for country column, replaced with 0 for medal column and replaced with mean for age, hight and weight as seen below.</p>
+								<pre>
+									<code>
+merged[['Age','Height','Weight','Medal','Country','notes']].isnull().sum()
+Age         2671
+Height     15876
+Weight     16718
+Medal      59931
+Country       63
+notes      68374
+
+# Handling nulls
+merged['Medal'].fillna(0, inplace=True)
+merged['Age'].fillna(merged['Age'].mean , inplace=True)
+merged['Height'].fillna(merged['Height'].mean , inplace=True)
+merged['Weight'].fillna(merged['Weight'].mean , inplace=True)
+merged.dropna(subset=["Country"], inplace=True) 
+									</code>
+								</pre>
+							<p>  </p>
+							
+							<h2>exploratory data analysis EDA</h2>
+							<p>As mentiond above that I will perform exploratory data analysis to visualize and understand trends and patterns and to present the gross over time, so let's dive through the visuals made.</p>
+								
+							
+								<h5>1- Gross of sports count over time</h5>
+								<span class="image secondary"><img src="images/olympics sport gross.png" alt="" /></span>
+								<p>As we can see sports count developed thoughout the time for summer sports in blue despite having drops several times, while the count is nearly stable for winter sports as ice sports are not divrese.</p>
+							
+
+								<h5>2- Gross of athlete count over time</h5>
+								<p>It is expected that the gross of sports count would inflict on the total numper of athletes participating, which can be seen below as true.</p>
+								<span class="image secondary"><img src="images/olympics athlete gross.png" alt="" /></span>
+								<p>As expected Number of athletes participating in every season increased over time, but the count dropped significantly few times which is a matter that needs invistigation.Atheletes count taking part in winter games is nearly stable again.</p>
+								
+								<h5>3- Gender Participation</h5>
+								<span class="image secondary"><img src="images/olympics gender.png" alt="" /></span>
+								<p>Male participation 76.7% is far higher than female participation 23.3%, but has male participation always been very high than female participation over every season? that can be tricky, so lets visualize the gender participation for every season next.</p>
+
+								<h5>4- Gender Participation Per Season</h5>
+								<span class="image secondary"><img src="images/olympics gender gross.png" alt="" /></span>
+								<p>Here the pic is more clear. Gender participation gap started decreasing with 1984 season and still closing, and the low female participation before that date is what made the gender participation gap very wide.</p>
+								<p>Again we can notice that there was significat drop in participation within different seasons.</p>
+
+								<h5>5- Top Successful Countries</h5>
+								<span class="image secondary"><img src="images/olympics country sucess.png" alt="" /></span>
+								<p>  </p>
+
+
+
+							<h2>HISTORICAL OLYMPIC DATA FINDINGS</h2>
+							<pre>
+- sample size is 70000 row for Olympics from 1896 to 2016.
+
+- Number of sports and events developed throughout history.
+- Stable count for winter sports as the sports involving ice are not diverse.
+- Winter games do not share same popularity as summer games.
+- Number of summer sports increased from 9 to reach 34.
+- the increase in sports count has a positive impact on Country count and more on athletes count.
+
+- there were 4 olympics where athlete and country participation dropped significantly.
+- 1904 due to tensions caused by the Russo–Japanese War and difficulties in traveling to St. Louis.
+- 1932 due to the great depression of 1929.
+- 1956 due to boycott started by Egypt, Iraq, Campodia and Lebanon in response to the Seuz canal crisis.
+- 1980 as the US started boycott protesting against the Soviet Union invading Afghanistan.
+
+- Gender participation has male domination by 76.7% over 23.3% for female athletes.
+- Male and female participation in Winter olympics is close and stable over time.
+- Male and female participation in summer olympics increased over time and the gap is decreasing from 1984 and onward.
+- For future, itroducing new sports and events for both male and female shall decrease the gap.
+
+- USA is the most successful country followed by Rusiia, Germany and other countries.
+							</pre>
+
+							
+						</div>
+					</div>
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="https://github.com/ramez-abdelsalam/Portfolio/blob/main/OlympicsData.ipynb" class="button">click here for the full code on github</a></li>
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

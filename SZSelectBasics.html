@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="SZSelectBasics.html">SELECT basics</a></li>
+							<li><a href="SZSelectNames.html">SELECT name</a></li>
+							<li><a href="SZSelectFromWorld.html">SELECT from world</a></li>
+							<li><a href="SZSelectFromNobel.html">SELECT from Nobel</a></li>
+							<li><a href="SZSelectWithinSelect.html">SELECT within SELECT</a></li>
+							<li><a href="SZSum&Count.html">SUM and COUNT</a></li>
+							<li><a href="SZJoins.html">JOIN</a></li>
+							<li><a href="SZMoreJoinOperations.html">More JOIN operations</a></li>
+							<li><a href="SZUsingNull.html">Using NULL</a></li>
+							<li><a href="SZNumericExamples.html">Numeric Examples</a></li>
+							<li><a href="SZCovid19WindowLag.html">COVID 19</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>SQLZOO Select Basics Practices Solutions.</h1>
+							<span class="image main"><img src="images/sqlzoo in.png" alt="" /></span>
+
+							
+
+							<h2>1.</h2>
+							<p>The example uses a WHERE clause to show the population of 'France'. Note that strings (pieces of text that are data) should be in 'single quotes';</p>
+							<p><b>Modify it to show the population of Germany</b></p>
+							<pre>
+								<code>
+SELECT population FROM world
+  WHERE name = 'germany'
+								</code>
+							</pre>
+
+
+							<h2>2.</h2>
+							<p>Checking a list The word IN allows us to check if an item is in a list. The example shows the name and population for the countries 'Brazil', 'Russia', 'India' and 'China'.</p>
+							<p><b>Show the name and the population for 'Sweden', 'Norway' and 'Denmark'.</b></p>
+							<pre>
+								<code>
+SELECT name, population FROM world
+  WHERE name IN ('sweden', 'norway', 'denmark');
+								</code>
+							</pre>
+
+
+							<h2>3.</h2>
+							<p>Which countries are not too small and not too big? BETWEEN allows range checking (range specified is inclusive of boundary values). The example below shows countries with an area of 250,000-300,000 sq. km. Modify it to show the country and the area for countries with an area between 200,000 and 250,000.</p>
+							<pre>
+								<code>
+SELECT name, area FROM world
+  WHERE area BETWEEN 200000 AND 250000
+								</code>
+							</pre>
+							
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

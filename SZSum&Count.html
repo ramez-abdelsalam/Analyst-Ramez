@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="SZSelectBasics.html">SELECT basics</a></li>
+							<li><a href="SZSelectNames.html">SELECT name</a></li>
+							<li><a href="SZSelectFromWorld.html">SELECT from world</a></li>
+							<li><a href="SZSelectFromNobel.html">SELECT from Nobel</a></li>
+							<li><a href="SZSelectWithinSelect.html">SELECT within SELECT</a></li>
+							<li><a href="SZSum&Count.html">SUM and COUNT</a></li>
+							<li><a href="SZJoins.html">JOIN</a></li>
+							<li><a href="SZMoreJoinOperations.html">More JOIN operations</a></li>
+							<li><a href="SZUsingNull.html">Using NULL</a></li>
+							<li><a href="SZNumericExamples.html">Numeric Examples</a></li>
+							<li><a href="SZCovid19WindowLag.html">COVID 19</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>SQLZOO SUM and COUNT Practice Solutions.</h1>
+							<span class="image main"><img src="images/sqlzoo in.png" alt="" /></span>
+
+							
+
+							<h2>Total world population</h2>
+							<h2>1.</h2>
+							<p>Show the total <b>population</b> of the world.</p>
+							<blockquote>world(name, continent, area, population, gdp)</blockquote>
+							<pre>
+								<code>
+SELECT SUM(population)
+FROM world
+								</code>
+							</pre>
+
+
+
+							<h2>List of continents</h2>
+							<h2>2.</h2>
+							<p>List all the continents - just once each.</p>
+							<pre>
+								<code>
+SELECT DISTINCT continent
+from world;
+								</code>
+							</pre>
+
+
+							
+							<h2>GDP of Africa</h2>
+							<h2>3.</h2>
+							<p>Give the total GDP of Africa</p>
+							<pre>
+								<code>
+select sum(gdp)
+from world
+where continent = 'Africa';
+								</code>
+							</pre>
+
+
+
+							<h2>Count the big countries</h2>
+							<h2>4.</h2>
+							<p>How many countries have an <b>are</b> of at least 1000000</p>
+							<pre>
+								<cod>
+select count(name)
+from world
+where area > 1000000;
+								</cod>
+							</pre>
+
+
+
+							<h2>Baltic states population</h2>
+							<h2>5.</h2>
+							<p>What is the total <b>population</b> of('Estonia', 'Latvia', 'Lithuania')</p>
+							<pre>
+								<code>
+select sum(population)
+from world
+where name in ('Estonia', 'Latvia', 'Lithuania');
+								</code>
+							</pre>
+
+
+
+							<h2>Counting the countries of each continent</h2>
+							<h2>6.</h2>
+							<p>For each <b>continent</b> show the <b>continent</b> and number of countries</p>
+							<pre>
+								<code>
+select continent, count(name)
+from world
+group by continent;
+								</code>
+							</pre>
+
+
+
+							<h2>Counting big countries in each continent</h2>
+							<h2>7.</h2>
+							<p>For each <b>continent</b> show the <b>continent</b> and number of countries with populations of at least 10 million.</p>
+							<pre>
+								<code>
+select continent, count(name)
+from world
+where population >= 10000000
+group by continent;
+								</code>
+							</pre>
+
+
+
+							<h2>Counting big continents</h2>
+							<h2>8.</h2>
+							<p>List the continents that <b>have</b> a total population of at least 100 million</p>
+							<pre>
+								<code>
+select continent
+from world
+group by continent
+having sum(population) > 100000000
+;
+								</code>
+							</pre>
+							
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

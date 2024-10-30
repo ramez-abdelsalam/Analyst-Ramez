@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="houseModel.html">Housing Price Prediction Model</a></li>
+							<li><a href="usRealEstate.html">US Real Estate Sales</a></li>
+							<li><a href="olympics.html">Olympics Historical Data</a></li>
+							<li><a href="Pepsico.html">PepsiCo Products Data</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>pepsiCo Products Data Cleaning & EDA</h1>
+							<span class="image main"><img src="images/PepsicoIn.jpg" alt="" /></span>
+						<section>	
+							<h2>Project Objectives</h2>
+							<p>Performing exploratory data analysis to visualize and understand trends and patterns and to present the gross or fails over time.</p>
+						</section>
+							
+							<h2>About the dataset</h2>
+							<p>PepsiCo products Details : 180+ products contains active and inactive products which completely or partially owned by PepsiCo, Data Link<a href="https://www.kaggle.com/datasets/mauryansshivam/pepsico-products-details-180-products"> HERE</a>, Data usability is 10 and License is CCO:Public Domain, data dimensions (223, 6).</p>
+							<p>  </p>
+							
+							<h2>columns discription</h2>
+							<pre>
+Product Name: Name of the product.
+Year Launched: The year when each product was launched to the market.
+Status: Whether the product is still produced or discontinued.
+Region Served: Are where each product is distributed.
+Category: Classification of each product.
+Ownership: whether the product is owned directly by PepsiCo or partial or other types of ownership.
+
+							</pre>
+							<p>  </p>
+							
+							<h2>Libraries used</h2>
+							<pre>
+								<code>
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+								</code>
+							</pre>
+							<p>  </p>
+							
+							<h2>data cleaning</h2>
+								<h4>1- Duplicates Removal</h4>
+								<p>The 223 row dataframe had 32 duplicate row that were removed.</p>
+								<p>  </p>
+
+								<h4>2- Handling Nulls</h4>
+								<p>The data had no nulls.</p>
+								
+							<p>  </p>
+							
+							<h2>exploratory data analysis EDA</h2>
+							<p>As mentiond above that I will perform exploratory data analysis to visualize and understand trends and patterns and to present the gross over time, so let's dive through the visuals made.</p>
+								
+							
+								<h5>1- Products launch year</h5>
+								<span class="image secondary"><img src="images/pepsicoLaunchYear.png" alt="" /></span>
+								<p>As seen, products launch year is widely distributed over 60 years or more since the first product was launched at 1863 and the rate of releasing increased since 1980 to be almost every year.</p>
+							
+
+								<h5>2- Products status</h5>
+								<span class="image secondary"><img src="images/pepsicoActive.png" alt="" /></span>
+								<p>Active products represents 80.6% (154 product) of the total historical products while discontinued products represents 19.4% (37 product).</p>
+								
+								<h5>3- Active products ownership distribution</h5>
+								<span class="image secondary"><img src="images/pepsicoOwnership.png" alt="" /></span>
+								<p>PepsiCo launched only 24.7% of the products that currently active, while 75.3% of the products are not directly owned by PepsiCo. That reflected the successful aquisitions and partnerships that the management of PepsiCo had.</p>
+
+								<h5>4- Regions Served</h5>
+								<span class="image secondary"><img src="images/pepsicoRegionServed.png" alt="" /></span>
+								<p>PepsiCo serves varity of regions, however most of the products are served in north america with about 50% of the products but that does not necessarily mean that the most revenue is generated at north america.</p>
+
+								<h5>5- Products category</h5>
+								<span class="image secondary"><img src="images/pepsicoProductCat.png" alt="" /></span>
+								<p>You may think all or most of PepsiCo products are beverages as their most famous products are beverages, however 80 product are snacks while beverages are 22.</p>
+								<p>  </p>
+
+
+
+							<h2>PEPSICO PRODUCTS DATA FINDINGS</h2>
+							<pre>
+- sample size is 223 row for PepsiCo products from 1863 to 2021.
+
+- PepsiCo had 191 product throughout history as a direct sole, partial or indirect ownerships and subsidaries.
+- Products launch year rate was slow till 1980 where the rate increased to be yearly.
+- A total of 37 PepsiCo product is discontinued '19.4%' and 154 are active products '80.6%'.
+- PepsiCo launched 24.7% of its total products, while 75.3% sre throughout aquiring or partnerships.
+- <b>Historical</b> PepsiCo Inc. was founded in 1965 when the two big companies which are Pepsi-Cola and Frito–Lays was merged. 
+- PepsiCo acquired Tropicana in 1998 and then Quaker Oats and Gatorade in 2001.
+- PepsiCo is a conglomerate and a multinational manufacturer and supplier of soft drinks, food items, snacks and different types of juices. 
+	The company distributes its variety of products to more than 200 countries.
+- 80 product are served in north america as the most region served through PepsiCo Beverages North America and Frito-Lay North America.
+- PepsiCo is not only a beverage producer, they manufacture 80 snack products mostly by frito lay.
+
+							</pre>
+
+							
+						</div>
+					</div>
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="https://github.com/ramez-abdelsalam/Portfolio/blob/main/Pepsico_products.ipynb" class="button">click here for the full code on github</a></li>
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

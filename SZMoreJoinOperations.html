@@ -1,0 +1,332 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="SZSelectBasics.html">SELECT basics</a></li>
+							<li><a href="SZSelectNames.html">SELECT name</a></li>
+							<li><a href="SZSelectFromWorld.html">SELECT from world</a></li>
+							<li><a href="SZSelectFromNobel.html">SELECT from Nobel</a></li>
+							<li><a href="SZSelectWithinSelect.html">SELECT within SELECT</a></li>
+							<li><a href="SZSum&Count.html">SUM and COUNT</a></li>
+							<li><a href="SZJoins.html">JOIN</a></li>
+							<li><a href="SZMoreJoinOperations.html">More JOIN operations</a></li>
+							<li><a href="SZUsingNull.html">Using NULL</a></li>
+							<li><a href="SZNumericExamples.html">Numeric Examples</a></li>
+							<li><a href="SZCovid19WindowLag.html">COVID 19</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>SQLZOO Select Basics Practices Solutions.</h1>
+							<span class="image main"><img src="images/sqlzoo in.png" alt="" /></span>
+
+							
+
+							<h2>1962 movies</h2>
+							<h2>1.</h2>
+							<p>List the films where the <b>yr</b> is 1962 [show <b>id, title</b>]</p>
+							<pre>
+								<code>
+SELECT id, title
+FROM movie
+WHERE yr=1962
+								</code>
+							</pre>
+
+
+							
+							<h2>When was Citizen Kane released</h2>
+							<h2>2.</h2>
+							<p>Give year of 'Citizen Kane'.</p>
+							<pre>
+								<code>
+SELECT yr
+FROM movie
+WHERE title = 'citizen kane';
+								</code>
+							</pre>
+
+
+							
+							<h2>Star Trek movies</h2>
+							<h2>3.</h2>
+							<p>List all of the Star Trek movies, include the <b>id</b>, <b>title</b> and <b>year</b> (all of these movies include the words Star Trek in the title). Order results by year.</p>
+							<pre>
+								<code>
+SELECT id, title, yr
+FROM movie 
+WHERE title like '%star trek%'
+ORDER BY yr;
+								</code>
+							</pre>
+
+
+
+							<h2>id for actor Glenn Close</h2>
+							<h2>4.</h2>
+							<p>What <b>id</b> number does the actor 'Glenn Close' have?</p>
+							<pre>
+								<code>
+SELECT id
+FROM actor
+WHERE name = 'glenn close';
+								</code>
+							</pre>
+
+
+
+							<h2>id for Casablanca</h2>
+							<h2>5.</h2>
+							<p>What is the <b>id</b> for the film 'Casablanca'</p>
+							<pre>
+								<code>
+SELECT id
+FROM movie
+WHERE title = 'casablanca';
+								</code>
+							</pre>
+
+
+
+							<h2>Cast list for Casablanca</h2>
+							<h2>6.</h2>
+							<p>Obtain the cast list for 'casablanca' 
+								<br>Use <b>movieid=11768</b>, (or whatever value you got from the previous question)
+							</p>
+							<pre>
+								<code>
+SELECT name
+FROM actor
+JOIN casting ON id = actorid
+WHERE movieid = 11768;
+
+If movieid is not known or can change
+
+SELECT name
+FROM actor
+JOIN casting ON id = actorid
+WHERE movieid = (SELECT id FROM movie WHERE title = 'casablanca');
+								</code>
+							</pre>
+
+
+
+							<h2>Alien cast List</h2>
+							<h2>7.</h2>
+							<p>Obtain the cast list for the film 'Alien'</p>
+							<pre>
+								<code>
+select name
+from actor A
+join casting C on A.id = C.actorid
+JOIN movie M ON C.movieid = M.id
+WHERE title = 'alien';
+								</code>
+							</pre>
+
+
+
+							<h2>harrison Ford movies</h2>
+							<h2>8.</h2>
+							<p>List the films in which 'Harrison Ford' has appeared</p>
+							<pre>
+								<code>
+SELECT title FROM movie M
+JOIN casting C ON M.id = C.movieid
+JOIN actor A ON C.actorid = A.id
+WHERE name = 'harrison ford';
+    
+								</code>
+							</pre>
+
+
+
+							<h2>Harrison Ford as a supporting actor</h2>
+							<h2>9.</h2>
+							<p>List the films where 'Harrison Ford' has appeared - but not in the starring role.</p>
+							<pre>
+								<code>
+SELECT title FROM movie M
+JOIN casting C ON M.id = C.movieid
+JOIN actor A ON C.actorid = A.id
+WHERE name = 'harrison ford'
+AND ord != 1;
+								</code>
+							</pre>
+
+
+
+							<h2>Lead actors in 1962 movies</h2>
+							<h2>10.</h2>
+							<p>List the films together with the leading star for all 1962 films.</p>
+							<pre>
+								<code>
+SELECT title, name
+FROM movie M
+JOIN casting C ON M.id = C.movieid
+JOIN actor A ON C.actorid = A.id
+WHERE yr = 1962
+AND ord = 1;
+								</code>
+							</pre>
+
+
+
+							<h2>Busy years for Rock Hudson</h2>
+							<h2>11.</h2>
+							<p>Which were the busiest years for 'Rock Hudson', show the year and the number of movies he made each year for any year in which he made more than 2 movies.</p>
+							<pre>
+								<code>
+SELECT yr,COUNT(title) FROM
+  movie JOIN casting ON movie.id=movieid
+        JOIN actor   ON actorid=actor.id
+WHERE name='rock hudson'
+GROUP BY yr
+HAVING COUNT(title) > 2;
+								</code>
+							</pre>
+
+
+
+							<h2>Lead actor in Jolie Andrews movies</h2>
+							<h2>12.</h2>
+							<p>List the film title and the leading actor for all of the films 'Julie Andrews' played in.</p>
+							<pre>
+								<code>
+SELECT title, A.name
+FROM movie M
+JOIN casting C ON M.id = C.movieid
+JOIN actor A ON A.id = C.actorid
+WHERE ord = 1
+AND M.id  IN (
+SELECT movieid FROM casting C
+JOIN actor A ON C.actorid = A.id
+WHERE A.name = 'Julie Andrews');
+								</code>
+							</pre>
+
+
+
+							<h2>Actors with 15 leading roles</h2>
+							<h2>13.</h2>
+							<p>Obtain a list, in alphabetical order, of actors who've had at least 15 <b>starring</b> roles.</p>
+							<pre>
+								<code>
+SELECT name FROM actor A
+JOIN casting C ON A.id = C.actorid
+JOIN movie M ON C.movieid = M.id
+WHERE ord = 1
+GROUP BY name
+HAVING COUNT(title) >= 15
+ORDER BY A.name;
+								</code>
+							</pre>
+
+
+
+							<h2>Released in the year 1978</h2>
+							<h2>14.</h2>
+							<p>List the films released in the year 1978, and how many actors they cast, ordered first by the number of actors in the cast, then by title.</p>
+							<pre>
+								<code>
+SELECT title, COUNT(actorid) FROM movie M
+JOIN casting C ON M.id = C.movieid
+JOIN actor A ON C.actorid = A.id
+WHERE M.yr = 1978
+GROUP BY title
+ORDER BY count(actorid) DESC, title;
+								</code>
+							</pre>
+
+
+
+							
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

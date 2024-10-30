@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="SZSelectBasics.html">SELECT basics</a></li>
+							<li><a href="SZSelectNames.html">SELECT name</a></li>
+							<li><a href="SZSelectFromWorld.html">SELECT from world</a></li>
+							<li><a href="SZSelectFromNobel.html">SELECT from Nobel</a></li>
+							<li><a href="SZSelectWithinSelect.html">SELECT within SELECT</a></li>
+							<li><a href="SZSum&Count.html">SUM and COUNT</a></li>
+							<li><a href="SZJoins.html">JOIN</a></li>
+							<li><a href="SZMoreJoinOperations.html">More JOIN operations</a></li>
+							<li><a href="SZUsingNull.html">Using NULL</a></li>
+							<li><a href="SZNumericExamples.html">Numeric Examples</a></li>
+							<li><a href="SZCovid19WindowLag.html">COVID 19</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>SQLZOO Select from World Practice Solutions.</h1>
+							<span class="image main"><img src="images/sqlzoo in.png" alt="" /></span>
+
+							
+
+							<h2>large countries</h2>
+							<h2>2.</h2>
+							<p>Show the name for the countries that have a population of at least 200 million. 200 million is 200000000, there are eight zeros.</p>
+							<pre>
+								<code>
+SELECT name FROM world
+WHERE population >= 200000000;
+								</code>
+							</pre>
+
+
+							<h2>per Capita GDP</h2>
+							<h2>3.</h2>
+							<p>Give the name and the <b>per capita GDP</b> for those countries with a population of at least 200 million.</p>
+							<blockquote>per capita GDP is the GDP divided by the population GDP/population</blockquote>
+							<pre>
+								<code>
+SELECT name, gdp/population as per_capita_gdp
+FROM world
+WHERE population >= 200000000;
+								</code>
+							</pre>
+
+
+							<h2>South America In Millions</h2>
+							<h2>4.</h2>
+							<p>Show the name and population in millions for the countries of the continent 'South America'. Divide the population by 1000000 to get population in millions.</p>
+							<pre>
+								<code>
+SELECT name, population/1000000 as population_mils
+FROM world
+WHERE continent = 'south america';
+								</code>
+							</pre>
+
+
+
+							<h2>France, Germany, Italy</h2>
+							<h2>5.</h2>
+							<p>Show the name and population for France, Germany, Italy</p>
+							<pre>
+								<code>
+select name, population
+from world
+where name in ('france', 'italy', 'germany');
+								</code>
+							</pre>
+
+
+
+							<h2>United</h2>
+							<h2>6.</h2>
+							<p>Show the countries which have a name that includes the word 'United'</p>
+							<pre>
+								<code>
+select name
+from world 
+where name like '%united%';
+								</code>
+							</pre>
+
+
+
+							<h2>Two ways to be big</h2>
+							<h2>7.</h2>
+							<p>Two ways to be big: A country is big if it has an area of more than 3 million sq km or it has a population of more than 250 million.</p>
+							<p><b>Show the countries that are big by area or big by population. Show name, population and area.</b></p>
+							<pre>
+								<code>
+select name, population, area
+from world
+where area > 3000000 or population > 250000000;
+								</code>
+							</pre>
+
+
+
+							<h2>One or the other (but not both)</h2>
+							<h2>8.</h2>
+							<p><b>Exclusive OR (XOR). Show the countries that are big by area (more than 3 million) or big by population (more than 250 million) but not both. Show name, population and area.</b></p>
+							<p>Australia has a big area but a small population, it should be <b>included</b>.
+								Indonesia has a big population but a small area, it should be <b>included</b>.
+								China has a big population <b>and</b> big area, it should be <b>excluded</b>.
+								United Kingdom has a small population and a small area, it should be <b>excluded</b>.
+							</p>
+							<pre>
+								<code>
+SELECT name, population, area
+FROM world
+WHERE population > 250000000 AND NOT area > 3000000
+OR
+area > 3000000 AND NOT population > 250000000;
+								</code>
+							</pre>
+
+
+
+							<h2>
+								Rounding
+							</h2>
+							<h2>9.</h2>
+							<p>Show the name and population in millions and the GDP in billions for the countries of the continent 'South America'. Use the ROUND function to show the values to two decimal places.</p>
+							<p><b>For South America show population in millions and GDP in billions both to 2 decimal places.</b></p>
+							<pre>
+								<code>
+SELECT name,
+ROUND(population/1000000 ,2) as population_mil,
+ROUND(GDP/1000000000 ,2) as GDP_billions
+FROM world
+WHERE continent ='south america';
+    
+								</code>
+							</pre>
+
+
+
+							<h2>Trillion dollar economies</h2>
+							<h2>10.</h2>
+							<p>Show the name and per-capita GDP for those countries with a GDP of at least one trillion (1000000000000; that is 12 zeros). Round this value to the nearest 1000.</p>
+							<p><b>Show per-capita GDP for the trillion dollar countries to the nearest $1000.</b></p>
+							<pre>
+								<code>
+SELECT name,
+ROUND(gdp/population, -3) as gdp_thousands
+FROM world
+WHERE gdp > 1000000000000;
+								</code>
+							</pre>
+
+
+
+							<h2>Name and capital have the same lenght</h2>
+							<h2>11.</h2>
+							<p>Greece has capital Athens.Each of the strings 'Greece', and 'Athens' has 6 characters.</p>
+							<p><b>Show the name and capital where the name and the capital have the same number of characters.</b></p>
+							<pre>
+								<code>
+SELECT name, capital
+FROM world
+WHERE LENGTH(name) = LENGTH(capital);
+								</code>
+							</pre>
+
+
+
+							<h2>Matching name and capital</h2>
+							<h2>12.</h2>
+							<p>The capital of Sweden is Stockholm. Both words start with the letter 'S'.</p>
+							<p><b>Show the name and the capital where the first letters of each match. Don't include countries where the name and the capital are the same word.</b></p>
+							<p>You can use the function LEFT to isolate the first character.
+								You can use <> as the <b>NOT EQUALS</b> operator.
+								</p>
+							<pre>
+								<code>
+SELECT name, capital
+FROM world
+WHERE LEFT(name,1) = LEFT(capital,1) 
+AND name <> capital;
+								</code>
+							</pre>
+
+
+
+							<h2>All the vowels</h2>
+							<h2>13.</h2>
+							<p><b>Equatorial Guinea</b> and <b>Dominican Republic</b> have all of the vowels (a e i o u) in the name. They don't count because they have more than one word in the name.</p>
+							<p><b>Find the country that has all the vowels and no spaces in its name.</b></p>
+							<pre>
+								<code>
+SELECT name FROM world
+WHERE name LIKE '%a%'
+AND name LIKE '%e%'
+AND name LIKE '%i%'
+AND name LIKE '%o%'
+AND name LIKE '%u%'
+AND name NOT LIKE '% %';
+								</code>
+							</pre>
+							
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

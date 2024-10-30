@@ -1,0 +1,245 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="generic.html">Housing Price Prediction Model</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Housing Price Prediction Project Objectives & Overview</h1>
+							<span class="image main"><img src="images/houses model.jpg" alt="" /></span>
+						<section>	
+							<h2>Project Objectives</h2>
+							<p>Developing a predictive price model for houses as it is very important for real estate sector to estimate prices of the properities & to use a wide varity of analytical tools and techniques.</p>
+						</section>
+							
+							<h2>About the dataset</h2>
+							<p>This dataset provides key features for predicting house prices, including area, bedrooms, bathrooms, stories, amenities like air conditioning and parking, and information on furnishing status. It enables analysis and modelling to understand the factors impacting house prices and develop accurate predictions in real estate markets, Data Link<a href="https://www.kaggle.com/datasets/harishkumardatalab/housing-price-prediction/data"> HERE</a>, Data usability is 10 and License is CCO:Public Domain.</p>
+							<p>  </p>
+							
+							<h2>columns discription</h2>
+							<pre>
+Price: The price of the house.
+Area: The total area of the house in square feet.
+Bedrooms: The number of bedrooms in the house.
+Bathrooms: The number of bathrooms in the house.
+Stories: The number of stories in the house.
+Mainroad: Whether the house is connected to the main road (Yes/No).
+Guestroom: Whether the house has a guest room (Yes/No).
+Basement: Whether the house has a basement (Yes/No).
+Hot water heating: Whether the house has a hot water heating system (Yes/No).
+Airconditioning: Whether the house has an air conditioning system (Yes/No).
+Parking: The number of parking spaces available within the house.
+Prefarea: Whether the house is located in a preferred area (Yes/No).
+Furnishing status: The furnishing status of the house (Fully Furnished, Semi-Furnished, Unfurnished).
+							</pre>
+							<p>  </p>
+							
+							<h2>importing libraries</h2>
+							<p>Importing manipulation, visualization and preprocessing libraries beside all models and metrics used.</p>
+							<span class="image secondary"><img src="images/house model libraries.png" alt="" /></span>
+							<p>  </p>
+							
+							<h2>data cleaning and preprocessing</h2>
+							<p>As the data usability is 10, there were no null and no duplicates. Outliers were present and had different impacts upon the models results when experimenting. Data had 545 row, while after removing outliers from (price, area, parking, bathrooms) columns it became 501 row.</p>
+							<span class="image secondary"><img src="images/house model bpxplot.png" alt="" class="center"/></span>
+							<p>Data formating was performed to convert area column from SqFt to SqM, converting categorical variables to numerical variables using OneHotEncoding method followed by data normalization using Min Max Scaler and Standard Scaler for training and testing.
+							</p>
+							<span class="image secondary"><img src="images/house model m2.png" alt="" class="center"/></span>
+							<p><span class="image secondary"><img src="images/house model OneHotEncoding.png" alt="" /></span></p>
+							<p>  </p>
+							
+							<h2>exploratory data analysis EDA</h2>
+							<p>Performing EDA helps with understanding trends , patterns and correlations between different variables to identify which features are most important for our prediction model. We use for that step visualization tools like Matplotlip and Seaborn.</p>
+							<p>For that step I used the heatmap visual to view how each of the predictor variables correlate to the target variable 'price' and then tested the statistical significance of the correlations using the P-Value.</p>
+							<span class="image secondary"><img src="images/house model heat.png" alt="" /></span>
+							<span class="image secondary"><img src="images/house model corr.png" alt="" /></span>
+							<p>  </p>
+							<pre>
+strong negative correlation <-0.7
+-0.7 < moderate negative correlation <-0.3
+-0.3 < weak negative correlation <0.0
+ 0.0 < weak positive correlation <0.3
+ 0.3 < moderate positive correlation <0.7
+ 0.7 < strong positive correlation
+							</pre>
+							<blockquote>P-Value is the probability value that the correlation between two variables to be statistically significant.</blockquote>
+							<pre>
+the p-value is < 0.001: strong evidence that the correlation is significant
+the p-value is <  0.05: moderate evidence that the correlation is significant
+the p-value is <  0.1:  weak evidence that the correlation is significant
+the p-value is >  0.1:  no evidence that the correlation is significant
+							</pre>
+							<span class="image secondary"><img src="images/house model p-v.png" alt="" /></span>
+							<p>  </p>
+
+							<h2>feature engineering</h2>
+							<blockquote>Feature Engineering is the process of creating new features or transforming existing features to improve the performance of a machine-learning model.</blockquote>
+							<p>Four feature engineered columns were created and tested for correlation with price (Total rooms per house - Number of rooms per story - Number of bathrooms per story - Story area), only the total rooms per house had a moderate correlation with price, while the rest of the columns had a very weak correlation so I deleted them after.</p>
+							<span class="image secondary"><img src="images/house model FE 4.png" alt="" /></span>
+							<p><span class="image secondary"><img src="images/house model FE 2.png" alt="" /></span></p>
+							<p><span class="image secondary"><img src="images/house model FE 3.png" alt="" /></span></p>
+							<p><span class="image secondary"><img src="images/house model FE 1.png" alt="" /></span></p>
+							<p>  </p>
+							
+							<h2>model selection, training & evaluation</h2>
+							<p>A varity of Multiple linear regressions (MLR) and Polynomial regression models were trained using different compinations of columns with normalized data via both MinMaxScaler and StandardScaler, also the models were trained using SqFt & SqM for area column.</p>
+							<p>Model evaluation was performed using the Mean Absolute Error (MAE) and the R_squared. A value of MAE that is less than 10% will be a good result while an r2_score is good for a result of 0.8 or higher. The best result was obtained using the MLR for all the predictor variables with the data normalized by the MinMaxScaler (r2_score = 0.7570241008595766,	MAE = 652812.594059406). </p>
+							<p>Model evaluation via visuals was performed using the Kernal Desity Plot (kdeplot) to see how the actual and fitted values are close to each other.</p>
+							<span class="image secondary"><img src="images/house model kde plot.png" alt="" /></span>
+							<p>  </p>
+							
+							<h2>documenting results</h2>
+							<div class="table-wrapper">
+								<table class="alt">
+									<thead>
+										<tr>
+											<th>Model</th>
+											<th>R2</th>
+											<th>MAE</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Multiple Linear Regression for all predictors & MinMaxScaler</td>
+											<td>0.7570241008595766</td>
+											<td>652812.594059406</td>
+										</tr>
+										<tr>
+											<td>Multiple Linear Regression for all predictors not normalized using M2 area</td>
+											<td>0.7477138179826605</td>
+											<td>665355.0147424549</td>
+										</tr>
+										<tr>
+											<td>Multiple Linear Regression for all predictors not normalized using SqFt area</td>
+											<td>0.747659622660183</td>
+											<td>665602.0180010083</td>
+										</tr>
+										<tr>
+											<td>Multiple Linear Regression for all predictors & StandardScaler</td>
+											<td>0.7476596226601808</td>
+											<td>665602.0180010106</td>
+										</tr>
+										<tr>
+											<td>Multiple Linear Regression for all predictors & feature engineered column</td>
+											<td>0.7476596226601806	</td>
+											<td>665602.0180010108</td>
+										</tr>
+										<tr>
+											<td>Multiple Linear Regression for 18 predictor</td>
+											<td>0.7434242379347594</td>
+											<td>682336.0792079208</td>
+										</tr>
+										<tr>
+											<td>Polynomial Regression</td>
+											<td>0.7189785571297055</td>
+											<td>677800.6336633663</td>
+										</tr>
+										<tr>
+											<td>Multiple Linear Regression for Non categorical predictors</td>
+											<td>0.6325775885965157</td>
+											<td>845848.1072437116</td>
+										</tr>
+									</tbody>
+									
+								</table>
+							</div>
+							<p> </p>
+
+							<h2>Decision making</h2>
+							<p>Comparing the results of MAE and R2 of the models trained and tested, we conclude that the MLR model using all normalized predictors is the best model to be able to predict prices from the dataset, nearly 75% of the prices.</p>
+							<p>MAE = 652812.594059406, r2_score = 0.7570241008595766</p>
+							<p>More advanced machine learning models could be used, like Random Forest, Decision Trees, Lasso Regression, Gradiant Boosting and Neural Networks but I am not familiar with hyperparameter tuning and machine learning methods.</p>
+						</div>
+					</div>
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="https://github.com/ramez-abdelsalam/Portfolio/blob/main/Houses%20Price%20Prediction.ipynb" class="button">click here for the full code on github</a></li>
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

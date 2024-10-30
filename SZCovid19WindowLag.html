@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="SZSelectBasics.html">SELECT basics</a></li>
+							<li><a href="SZSelectNames.html">SELECT name</a></li>
+							<li><a href="SZSelectFromWorld.html">SELECT from world</a></li>
+							<li><a href="SZSelectFromNobel.html">SELECT from Nobel</a></li>
+							<li><a href="SZSelectWithinSelect.html">SELECT within SELECT</a></li>
+							<li><a href="SZSum&Count.html">SUM and COUNT</a></li>
+							<li><a href="SZJoins.html">JOIN</a></li>
+							<li><a href="SZMoreJoinOperations.html">More JOIN operations</a></li>
+							<li><a href="SZUsingNull.html">Using NULL</a></li>
+							<li><a href="SZNumericExamples.html">Numeric Examples</a></li>
+							<li><a href="SZCovid19WindowLag.html">COVID 19</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>SQLZOO Covid 19 Window LAG Practices Solutions.</h1>
+							<span class="image main"><img src="images/sqlzoo in.png" alt="" /></span>
+
+							
+
+							<h2>Introducing the <code>covid</code> table</h2>
+							<h2>1.</h2>
+							<p>The example uses a WHERE clause to show the cases in 'Italy' in March 2020.
+								<br><b>Modify the query to show data from Spain</b>
+							</p>
+							<pre>
+								<code>
+SELECT name, DAY(whn),
+confirmed, deaths, recovered
+FROM covid
+WHERE name = 'spain'
+AND MONTH(whn) = 3 AND YEAR(whn) = 2020
+ORDER BY whn
+								</code>
+							</pre>
+
+
+							
+							<h2>2.</h2>
+							<p>The <b>LAG</b> function is used to show data from the preceding row or the table. When lining up rows the data is partitioned by country name and ordered by the data <b>whn</b>. That means that only data from Italy is considered.
+								<br><b>Show the name and the population for 'Sweden', 'Norway' and 'Denmark'.</b>
+							</p>
+							<pre>
+								<code>
+SELECT name, DAY(whn), confirmed,
+LAG(confirmed, 1) OVER (PARTITION BY name ORDER BY whn) AS day_b4_confirmed
+FROM covid
+WHERE name = 'Italy'
+AND MONTH(whn) = 3 AND YEAR(whn) = 2020
+ORDER BY whn
+;
+								</code>
+							</pre>
+
+
+
+							<h2>Number of new cases</h2>
+							<h2>3.</h2>
+							<p>The number of confirmed case is cumulative - but we can use LAG to recover the number of new cases reported for each day.
+								<br><b>Show the number of new cases for each day, for Italy, for March.</b>
+							</p>
+							<pre>
+								<code>
+SELECT name, DAY(whn), 
+(
+confirmed - LAG(confirmed, 1) OVER (PARTITION BY name ORDER BY whn)
+)    AS daily_new
+FROM covid
+WHERE name = 'Italy'
+AND MONTH(whn) = 3 AND YEAR(whn) = 2020
+ORDER BY whn
+;
+								</code>
+							</pre>
+
+
+
+							<h2>Weekly changes</h2>
+							<h2>4.</h2>
+							<p>The data gathered are necessarily estimates and are inaccurate. However by taking a longer time span we can mitigate some of the effects.
+								<br>You can filter the data to view only Monday's figures <b>WHERE WEEKDAY(whn) = 0</b>.
+								<br><b>Show the number of new cases in Italy for each week in 2020 - show Monday only.</b>
+							</p>
+							<pre>
+								<code>
+SELECT name, DATE_FORMAT(whn,'%Y-%m-%d') AS weekly_date, 
+(
+confirmed -
+LAG(confirmed, 1) OVER (PARTITION BY name ORDER BY whn)
+)    AS weekly_new
+
+FROM covid
+WHERE name = 'Italy'
+AND WEEKDAY(whn) = 0 AND YEAR(whn) = 2020
+ORDER BY whn
+;
+								</code>
+							</pre>
+
+
+
+							<h2>LAG using a JOIN</h2>
+							<h2>5.</h2>
+							<p>You can JOIN a table using DATE arithmetic. This will give different results if data is missing.
+								<br><b>Show the number of new cases in Italy for each week - show Monday only.</b>
+								<br>In the sample query we JOIN this week <b>tw</b> with last week <b>lw</b> using the DATE_ADD function.
+							</p>
+							<pre>
+								<code>
+SELECT tw.name, 
+DATE_FORMAT(tw.whn,'%Y-%m-%d') AS weekly_date, 
+(tw.confirmed - lw.confirmed) AS weekly_new
+FROM covid tw LEFT JOIN covid lw ON 
+DATE_ADD(lw.whn, INTERVAL 1 WEEK) = tw.whn
+AND tw.name=lw.name
+WHERE tw.name = 'Italy'
+AND WEEKDAY(tw.whn) = 0
+ORDER BY tw.whn
+;
+								</code>
+							</pre>
+
+
+
+							<h2>rank()</h2>
+							<h2>6.</h2>
+							<p>The query shown shows the number of confirmed cases together with the world ranking for cases.
+								<br>United States has the highest number, Spain is number 2...
+								<br>Notice that while Spain has the second highest confirmed cases, Italy has the second highest number of deaths due to the virus.
+								<br><b>Include the ranking for the number of deaths in the table.</b>
+							</p>
+							<pre>
+								<code>
+SELECT name, confirmed,
+RANK() OVER (ORDER BY confirmed DESC) AS infections_rank,
+deaths,
+RANK() OVER (ORDER BY deaths DESC) AS deaths_rank
+FROM covid
+WHERE whn = '2020-04-20'
+ORDER BY confirmed DESC
+;
+								</code>
+							</pre>
+
+
+
+							<h2>Infection rate</h2>
+							<h2>7.</h2>
+							<p>The query shown includes a JOIN t the world table so we can access the total population of each country and calculate infection rates (in cases per 100,000).
+								<br><b>Show the infect rate ranking for each country. Only include countries with a population of at least 10 million.</b>
+							</p>
+							<pre>
+								<code>
+SELECT 
+world.name,
+ROUND(100000*confirmed/population,0)as infect_rate,
+RANK() OVER(ORDER BY infect_rate) 
+FROM covid JOIN world ON covid.name = world.name
+WHERE whn = '2020-04-20' AND population > 10000000
+ORDER BY population DESC
+;
+								</code>
+							</pre>
+
+
+
+							<h2>Turning the corner</h2>
+							<h2>8.</h2>
+							<p><b>For each country that has had at last 1000 new cases in a single day, show the date of the peak number of new cases.</b></p>
+							<pre>
+								<code>
+WITH cte1 AS
+(
+SELECT *, (confirmed - LAG(confirmed, 1) OVER (PARTITION BY name ORDER BY whn)) AS daily_cases
+FROM covid
+)
+, cte2 (name, max_cases) AS
+(
+SELECT name, MAX(daily_cases),
+FROM cte1
+GROUP BY name
+HAVING max_cases >= 1000
+)
+SELECT cte2.name, DATE_FORMAT(covid.whn,'%Y-%m-%d') AS date, cte2.max_cases
+FROM cte2 LEFT JOIN cte1 ON (cte2.name = cte1.name) AND (cte2.max_cases = cte1.daily_cases)
+ORDER BY date_;
+								</code>
+							</pre>
+
+							
+							
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

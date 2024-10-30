@@ -1,0 +1,309 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="SZSelectBasics.html">SELECT basics</a></li>
+							<li><a href="SZSelectNames.html">SELECT name</a></li>
+							<li><a href="SZSelectFromWorld.html">SELECT from world</a></li>
+							<li><a href="SZSelectFromNobel.html">SELECT from Nobel</a></li>
+							<li><a href="SZSelectWithinSelect.html">SELECT within SELECT</a></li>
+							<li><a href="SZSum&Count.html">SUM and COUNT</a></li>
+							<li><a href="SZJoins.html">JOIN</a></li>
+							<li><a href="SZMoreJoinOperations.html">More JOIN operations</a></li>
+							<li><a href="SZUsingNull.html">Using NULL</a></li>
+							<li><a href="SZNumericExamples.html">Numeric Examples</a></li>
+							<li><a href="SZCovid19WindowLag.html">COVID 19</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>SQLZOO JOINS Practice Solutions.</h1>
+							<span class="image main"><img src="images/sqlzoo in.png" alt="" /></span>
+
+							
+
+							<h2>1.</h2>
+							<p>The first example shows the goal scored by a player with the last name 'Bender'. The <code>*</code> says to list all the columns in the table - a shorter way of saying <code>matchid, teamid, player, gtime</code></p>
+							<p><b>Modify it to show the matchid and player name for all goals scored by Germany. To identify German players, check for: <code>teamid = 'GER'</code></b></p>
+							<pre>
+								<code>
+SELECT matchid, player
+FROM goal 
+WHERE teamid = 'ger';
+								</code>
+							</pre>
+
+
+							
+							<h2>2.</h2>
+							<p>From the previous query you can see that Lars Bender's scored a goal in game 1012. Now we want to know what teams were playing in that match.</p>
+							<p>Notice in the that the column <code>matchid</code> in the <code>goal</code> table corresponds to the <code>id</code> column in the <code>game</code> table. We can look up information about game 1012 by finding that row in the <b>game</b> table.</p>
+							<p><b>Show id, stadium, team1, team2 for just game 1012</b></p>
+							<pre>
+								<code>
+SELECT id,stadium,team1,team2
+FROM game
+where id = 1012;
+								</code>
+							</pre>
+
+
+
+							<h2>3.</h2>
+							<p>You can combine the two steps into a single query with a <code>JOIN</code>.</p>
+							<code>
+SELECT *
+FROM game JOIN goal ON (id=matchid)
+							</code>
+							<p>The <b>FROM</b> clause says to merge data from the goal table with that from the game table. The <b>ON</b> says how to figure out which rows in <b>game</b> go with which rows in <b>goal</b> - the <b>matchid</b> from <b>goal</b> must match <b>id</b> from <b>game</b>.(if we wanted to be more clear/specific we could say <code>ON(game.id = goal.matchid)</code> )</p>
+							<p>The code below shows the player (from the goal) and stadium name (from the game table) for every goal scored.</p>
+							<p><b>Modify it to show the player, teamid, stadium and mdate for every German goal.</b></p>
+							<pre>
+								<code>
+SELECT player,teamid, stadium, mdate
+FROM game gm
+JOIN goal gl
+ON gm.id=gl.matchid
+where teamid = 'ger';
+								</code>
+							</pre>
+
+
+
+							<h2>4.</h2>
+							<p><b>Show the team1, team2 and player for every goal scored by a player called Mario <code>player LIKE 'Mario%'</code></b></p>
+							<pre>
+								<code>
+SELECT team1, team2, player
+FROM game gm
+JOIN goal gl
+ON gm.id = gl.matchid
+WHERE player like 'mario%';
+								</code>
+							</pre>
+
+
+
+							<h2>5.</h2>
+							<p>The table <code>eteam</code> gives details of every national team including the coach. You can <code>JOIN</code> <code>goal</code> to <code>eteam</code> using the phrase <code>goal JOIN eteam on teamid=id</code></p>
+							<p><b>Show <code>player</code>, <code>teamid</code>, <code>coah</code>, <code>gtime</code> for all goals scored in the first 10 minutes <code>gtime<=10</code></b></p>
+							<pre>
+								<code>
+SELECT player, teamid, coach, gtime
+FROM goal gl
+JOIN eteam tm
+ON gl.teamid = tm.id
+WHERE gtime<=10;
+								</code>
+							</pre>
+
+
+
+							<h2>6.</h2>
+							<p><b>List the dates of the matches and the name of the team in which 'Fernando Santos' was the team1 coach.</b></p>
+							<pre>
+								<code>
+SELECT mdate, teamname
+FROM game gm
+JOIN eteam tm
+ON gm.team1 = tm.id
+WHERE coach = 'fernando santos';
+								</code>
+							</pre>
+
+
+
+							<h2>7.</h2>
+							<p><b>List the player for every goal scored in a game where the stadium was 'National Stadium, Warsaw'</b></p>
+							<pre>
+								<code>
+SELECT player
+FROM goal gl
+JOIN game gm
+ON gl.matchid = gm.id
+WHERE stadium = 'national stadium, warsaw';
+								</code>
+							</pre>
+
+
+
+							<h2>8.</h2>
+							<p>The example query shows all goals scored in the Germany-Greece quarterfinal.</p>
+							<p><b>Instead show the name of all players who scored a goal against Germany.</b></p>
+							<pre>
+								<code>
+SELECT DISTINCT player
+FROM game
+JOIN goal ON goal.matchid = game.id
+WHERE (team1 = 'GER' OR team2 = 'GER')
+AND teamid != 'GER';
+								</code>
+							</pre>
+
+
+
+							<h2>9.</h2>
+							<p><b>Show teamname and the total number of goals scored.</b></p>
+							<pre>
+								<code>
+SELECT teamname, count(teamid)
+FROM eteam
+JOIN goal
+ON id = teamid
+GROUP BY teamname
+;
+								</code>
+							</pre>
+
+
+
+							<h2>10.</h2>
+							<p><b>Show the stadium and the number of goals scored in each stadium.</b></p>
+							<pre>
+								<code>
+SELECT stadium, count(player)
+FROM game
+JOIN goal
+ON id = matchid
+group by stadium;
+								</code>
+							</pre>
+
+
+
+							<h2>11.</h2>
+							<p><b>For every match involving 'POL', show the matchid, date and the number of goals scored.</b></p>
+							<pre>
+								<code>
+SELECT matchid,mdate, count(matchid)
+FROM goal JOIN game ON id = matchid 
+WHERE (team1 = 'POL' OR team2 = 'POL')
+group by matchid;
+								</code>
+							</pre>
+
+
+
+							<h2>12.</h2>
+							<p><b>For every match where 'GER' scored, show matchid, match date and the number of goals scored by 'GER'</b></p>
+							<pre>
+								<code>
+SELECT matchid, mdate, count(teamid)
+FROM game
+JOIN goal 
+ON id = matchid
+where teamid = 'ger'
+GROUP BY id;
+								</code>
+							</pre>
+
+
+
+							<h2>13.</h2>
+							<p><b>List every match with the goals scored by each team as shown. This will use <code>"CASE WHEN"</code> which has not been explained in any previous exercises. Sort your result by mdate, team1 and team2.</b></p>
+							<pre>
+								<code>
+SELECT mdate, team1, 
+SUM(CASE
+    WHEN teamid = team1 THEN 1 ELSE 0
+END) as score1, team2, 
+SUM(CASE
+  WHEN teamid = team2 THEN 1 ELSE 0
+END) as score2       FROM game
+LEFT JOIN goal ON id = matchid
+GROUP BY mdate, matchid, team1, team2
+ORDER BY mdate, team1, team2;
+								</code>
+							</pre>
+
+
+							
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
