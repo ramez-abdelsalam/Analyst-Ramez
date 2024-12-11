@@ -1,0 +1,511 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<style>
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+					}
+		</style>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">ramez ellamey</span>
+								</a>
+
+							<!-- Nav -->
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+					<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="index.html">Home</a></li>
+							<li><a href="OnlineSales.html">Online Sales Data Project</a></li>
+							<li><a href="houseModel.html">Housing Price Prediction Model</a></li>
+							<li><a href="usRealEstate.html">US Real Estate Sales</a></li>
+							<li><a href="olympics.html">Olympics Historical Data</a></li>
+							<li><a href="Pepsico.html">PepsiCo Products Data</a></li>
+							
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Online Sales Data Project Overview</h1>
+						<section>	
+							<h2>Project Objectives</h2>
+							<p>Cleaning the data.
+								<br>Analysing sales performance and customer behaviour.
+								<br>Visualizing trends and invistigating returned items.
+							</p>
+						</section>
+							
+							<h2>About the dataset</h2>
+							<p>The dataset comprises anonymized data on online sales transactions, capturing various aspects of product purchases, customer details, and order characteristics. This dataset can be utilized for analyzing sales trends, customer purchase behavior, and order management in e-commerce or retail.
+								<br>Data Link<a href="https://www.kaggle.com/datasets/yusufdelikkaya/online-sales-dataset/data"> HERE</a>, Data usability is 8.82 and License is CCO:Public Domain.
+							</p>
+							<p>  </p>
+							
+							<h2>columns discription</h2>
+							<pre>
+InvoiceNo: Number of the purchase in sequence.
+StockCode: The code where the item is stored in the warehouse.
+Description: Name of the item.
+Quantity: Item amount per purchase.
+InvoiceDate: Date of the purchase.
+UnitPrice: price per unit within the purchase.
+CustomerID: Register id for the customer.
+Country: Country of the purchase.
+Discount: Amount reduced per unit of the purchase.
+PaymentMethod: How the payment was made.
+ShippingCost: Fees to ship each order.
+Category: Classification of product purchased.
+SalesChannel: How the purchase was made, online or offline.
+ReturnStatus: Whether the order was delivered successfully or returned.
+ShipmentProvider: name of the company to ship the orders.
+WarehouseLocation: Where the product was stored before shipping.
+OrderPriority: Importance of the order, high, medium or low.
+							</pre>
+							<p>  </p>
+							
+							<h2>1- Libraries & tools Used</h2>
+							<pre>
+								<code>
+		Python
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+import plotly.express as px
+
+		MySQL Workbench
+
+		Excel
+								</code>
+							</pre>
+							<p>  </p>
+							
+							<h2>2- data cleaning and preprocessing</h2>
+							<p>Data usability was 8.2, no duplicates were found and no typing mistakes.
+								<br>Cleaning steps involved filling nulls in 3 columns, reducing decimals, changing data types, trimming in one column, correcting negative values in 2 columns & reshaping a column entirely.
+								<br>All cleaning process was performed repeatedly using Python, SQl and Excel.
+							</p>
+
+								<h4>2-1 Reducing Decimals</h4>
+								<br>Discount column had more than 6 decimals within some values that i will reduce to 2.
+								<pre>
+									<code>
+		Python
+df['Discount'] = df['Discount'].round(2)
+
+		SQL
+UPDATE online_sales_2
+SET Discount = round(Discount, 2);
+									</code>
+								</pre>
+
+								<h4>2-2 Changing Data Types</h4>
+								<pre>
+									<code>
+		Python
+df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
+df['CustomerID'] = df['CustomerID'].astype('str')
+df['InvoiceNo'] = df['InvoiceNo'].astype('str')
+
+		SQL
+ALTER TABLE online_sales_2
+MODIFY COLUMN InvoiceNo text,
+MODIFY COLUMN CustomerID text,
+MODIFY COLUMN InvoiceDate datetime;
+									</code>
+								</pre>
+
+								<h4>2-3 Trimming Customer ID column</h4>
+								<br>CustomerID column values had extra (.0) after the Id number, which needed to be removed
+								<pre>
+									<code>
+		Python
+df["CustomerID"] = df["CustomerID"].str.rstrip('0').str.rstrip('.')
+
+		SQL
+UPDATE online_sales_2 
+SET CustomerID = REPLACE (CustomerID, '.0', '');
+									</code>
+								</pre>
+
+								<h4>2-4 Turning negative Values into positive</h4>
+								<br>Quantity & unitPrice columns had some negative values.
+								<pre>
+									<code>
+		Python
+df['Quantity'] = df['Quantity'].abs()
+df['UnitPrice'] = df["UnitPrice"].abs()
+
+		SQL
+UPDATE online_sales_2
+	SET 
+	Quantity = abs(Quantity),
+	UnitPrice = abs(UnitPrice);
+
+		Excel
+=IF(D2 < 0,(D2*-1),D2)
+									</code>
+								</pre>
+
+								<h4>2-5 Reshaping Category Column</h4>
+								<br>Category column values were totally messed, all items were calssified as all categories. 
+								<pre>
+									<code>
+		Python
+df['Category'] = df['Description'].apply(lambda x: 'Apparel' if x == 'T-shirt' else 
+		'Furniture' if x == 'Office Chair' else
+		'Stationary' if x in ['Notebook', 'Blue Pen'] else
+		'Accessories' if x in ['Backpack', 'Desk Lamp', 'Wall Clock', 'White Mug'] else
+		'Electronics' if x in ['Wireless Mouse', 'USB Cable', 'Headphones'] else
+		'unknown')
+
+		SQL
+UPDATE online_sales_2
+	SET Category = 
+	CASE
+		WHEN `Description` = 'T-shirt' THEN 'Apparel'
+        WHEN `Description` = 'Office Chair' THEN 'Furniture'
+        WHEN `Description` IN ('Notebook', 'Blue Pen') THEN 'Stationary'
+        WHEN `Description` IN ('Wireless Mouse', 'USB Cable', 'Headphones') THEN 'Electronics'
+        WHEN `Description` IN ('Backpack', 'Desk Lamp', 'Wall Clock', 'White Mug') THEN 'Accessories'
+	END;
+
+		Excel
+(=IFS(C2="T-shirt","Apparel",C2="Office Chair","Furniture",C2="Notebook","Stationary",C2="Blue Pen","Stationary"
+,C2="Backpack","Accessories",C2="Desk Lamp","Accessories",C2="Wall Clock","Accessories",C2="White Mug","Accessories"
+,C2="Wireless Mouse","Electronics",C2="USB Cable","Electronics",C2="Headphones","Electronics"))
+									</code>
+								</pre>
+
+								<h4>2-6 Filling Nulls</h4>
+								<br>CustomerID, ShippingCost & WarehouseLocation columns had nulls.
+								<br>For CustomerID column I will replace nulls with (unknown).
+								<pre>
+									<code>
+		Python
+df['CustomerID'].replace('nan', 'unknown', inplace = True)
+
+		SQL
+UPDATE online_sales_2
+	SET CustomerID = 'Unknown'
+	WHERE CustomerID = '';
+										
+		Excel
+=IF(G2="","Unknown", G2)
+
+									</code>
+								</pre>
+								<br>For ShippingCost & WarehouseLocation nulls,i will Use forward fill Method.
+								<pre>
+									<code>
+		Python
+df['ShippingCost'].fillna(method = 'ffill', inplace = True)
+df['WarehouseLocation'].fillna(method="ffill" , inplace = True)
+
+		SQL
+	-- 1- creating a new column row_num to use as an index
+ALTER TABLE online_sales_2 ADD COLUMN row_num INT;
+SET @row_number = 0; 
+UPDATE online_sales_2 SET row_num = (@row_number := @row_number + 1) ORDER BY invoicedate;
+		
+	-- 2- Creating a common table expression to group null cell with the nearest non null cell above
+WITH cte1 AS 
+(
+SELECT ShippingCost, row_num, COUNT(ShippingCost) OVER (ORDER BY row_num) AS nulls_grouped
+FROM online_sales_2
+),  -- 3- Creating another CTE to make a column with ShippingCost nulls filled
+cte2 AS 
+(
+SELECT row_num, ShippingCost, nulls_grouped, 
+FIRST_VALUE(ShippingCost) OVER (PARTITION BY nulls_grouped ORDER BY row_num) AS new_shippingcost
+FROM cte1
+)  -- 4- Using a join to update online_sales_2 from the new filled column created as a cte (cte2)
+UPDATE online_sales_2
+JOIN cte2 
+ON online_sales_2.row_num = cte2.row_num
+SET online_sales_2.ShippingCost = cte2.new_shippingcost
+WHERE online_sales_2.ShippingCost IS NULL;  -- Notice that the three steps are in one query without ;
+-- 5- Same procedure for WarehouseLocation nulls
+
+		Excel
+Select the column with nulls - Click home from ribbon - Click Find & Select from Editing section - 
+go to special - tik on blanks - all null cells will be selected - type = and arrow up - then Ctrl+Enter.
+									</code>
+								</pre>
+
+								<p>before moving to the next step I needed to figure out whether the Discount valus is per unit or per order, and whether ShippingCost is paid by Client or the company.
+									<br>I followed four steps
+									<br>-1 How proportionate is the discount to unit price and order price?
+									<br>-2 If there is an invoice repeated, does it has the same discount applied?
+									<br>-3 Will there be negative values if the product povider pays for shipping?
+									<br>-4 Business Logic.
+									<br> 
+									<br>Discount value was more proportionate with UnitPrice, same invoice had different discount values, over 500 negative values if company pays the shipping and business logic is discount is per unit while client pays for shipping.
+									<br>Decision is Discount is per unit and client pays ShippingCost.
+								</p>
+
+
+
+							<h2>3- Feature Engineering</h2>
+							<blockquote>Feature Engineering is the process of creating new features or transforming existing features to improve the performance the data.</blockquote>
+								<h2>3-1 Python</h2>
+								<p><span class="image secondary"><img src="images/Online Sales FE Python.png" alt="" /></span></p>
+								<pre>
+									<code>
+df['QuantityPrice'] = (df.Quantity * df.UnitPrice).round(2)
+df['OrderDiscount'] = (df.Quantity * df.Discount).round(2)
+df['OrderNetAmount'] = (df.QuantityPrice - df.OrderDiscount).round(2)
+df['InvoiceAmount'] = (df.OrderNetAmount + df.ShippingCost).round(2)
+df['OrderYear'] = df.InvoiceDate.dt.year.astype(str)
+df['OrderMonthName'] = df.InvoiceDate.dt.month_name()
+df['OrderMonth'] = df.InvoiceDate.dt.month
+df['OrderDay'] = df.InvoiceDate.dt.day.astype(str)
+df['OrderTime'] = df.InvoiceDate.dt.time
+df['OrderDayOfWeek'] = df.InvoiceDate.dt.day_name()
+									</code>
+								</pre>
+								<h2>3-2 SQL</h2>
+								<br>Here I created new columns contaning numbers parallel to a distinct value of another column to minimize memory usage.
+								<br>Then i will create new tables of distinct values like countries that i can use later using joins.
+								<br>Lastly deleting those columns while keeping the indexes columns will minimize data usage.
+								<br><b>Example</b>
+								<pre>
+									<code>
+	-- Creating the columns
+ALTER TABLE online_sales_2 
+ADD COLUMN (
+DescriptionIndex text,
+CountryIndex text,
+PaymentMethodIndex text,
+CategoryIndex text,
+SalesChannelIndex text,
+ReturnStatusIndex text,
+ShipmentProviderIndex text,
+WarehouseLocationIndex text,
+OrderPriorityIndex text
+);
+	-- Filling a column
+UPDATE online_sales_2
+SET SalesChannelIndex = 
+CASE
+WHEN SalesChannel = 'In-store' THEN '1'
+WHEN SalesChannel = 'Online' THEN '2'
+END;
+	-- Creating new table and accommodating data
+CREATE TABLE sales_channel (
+SalesChannelIndex TEXT,
+SalesChannel TEXT)
+	AS
+SELECT DISTINCT SalesChannelIndex, SalesChannel FROM online_sales_2;
+	-- Deleting columns
+ALTER TABLE online_sales_2 
+DROP COLUMN SalesChannel;
+
+									</code>
+								</pre>
+								<br>Same procedure was performed to all columns created.
+							<p>  </p>
+							
+
+
+							<h2>4- Data Visualization & EDA</h2>
+								<h3>4-1 Product Performance</h3>
+									<h4>4-1-1 Revenue generated by item</h4>
+									<p>Visualizing the revenue generated for each item helps with understanding which product performed well and what product needs solutions for inhanced sales</p>
+									<p><span class="image secondary"><img src="images/Online Sales Item Revenue.png" alt="" /></span></p>
+									<p> </p>
+
+									<h4>4-1-2 Quantity Sold By Product</h4>
+									<p>Visualizing revenue generated for items is not enough to draw a conclusion about products performance, quantity sold helps with making the pic more clear.
+										<br>Product quantity sold included within the same chart above.
+									</p>
+
+									<h4>4-1-3 Products Price Range</h4>
+									<p>All of the items sold nearly the same quantity and generated very close revenue, despite the differences in usage, sizes,materials and most importantly the production cost 'not available in the data'. that requires a further look in products price range and averages.</p>
+									<p><span class="image secondary"><img src="images/Online Sales Item Price Dist.png" alt="" /></span></p>
+									<br>Equal price distribution for all items which is the reason behind equal revenue generated alongside the same performance of quantities sold.
+								<p> </p>
+								
+								
+								<h3>4-2 Sales trends</h3>
+								<p>Visualizing complex data trends makes it easier to stakeholders to understand and make strategic decisions as it
+									<br>1- Identifies upwards and downwards over time.
+									<br>2- Reveals seasons patterns and cycle behaviour.
+									<br>3- Allows comparison against past performance.
+									<br>4- Helps in spotting anomalies or outliers.
+									<br>5- Helps with predicting future trends and planning for it.
+								</p>
+									<h4>4-2-1 Monthly Trends and yearly Growth</h4>
+									<p><span class="image secondary"><img src="images/Online Sales Month Trends.png" alt="" /></span></p>
+									<br>No monthly trends and no growth over years.
+									<p>  </p>
+
+									<h4>4-2-2 Day Of The Week Trends</h4>
+									<p><span class="image secondary"><img src="images/Online Sales Day Trends.png" alt =""/></span></p>
+									<br>No trends can be seen.
+									<p></p>
+
+									<h4>4-2-3 Purchase Time Trends</h4>
+									<p><span class="image scondary"><img src="images/Online Sales Time Trends.png" alt=""/></span></p>
+									<br>No trends to be seen
+									<p>  </p>
+
+
+								<h3>4-3 Customer Analysis</h3>
+								<p>Customer analysis has a crucial role in business success due to many reasons like,
+									<br>1- Indentify customers segements and their needs toward more precise marketing efforts.
+									<br>2- Understanding trends and customer behaviour toward better future planning.
+									<br>3- Helps in strategic pricing decisions based on customer behaviour.
+									<br>4- It guides toward product improvement or new product development. 
+								</p>
+									<h4>4-3-1 Customer Distribution & Sales Channel preference</h4>
+									<p><span class="image secondary"><img src="images/Online Sales Customer Dist.png" alt=""/></span></p>
+
+
+								<h3>4-4 Returned Items Analysis</h3>
+								<p>Despite being within the normal range of returned ites, analyzing it  provides insights that can help to improved product quality, customer satisfaction, cost savings, and strategic business adjustments</p>
+									
+									<h4>4-4-1 Distribution Of Returned items</h4>
+										<br>Here the aim is to identify if an item was returned with a higher rate, which may lead to a potential production issues.
+										<p><span class="image secondary"><img src="images/online Sales item Returns.png" alt="" /></span></p>
+										<br>No product was returned at a noticeable higher rate than other products, that means no production flaws that made a certain product defective.
+										<p> </p>
+
+									<h4>4-4-2 Warehouse Returns</h4>
+										<br>A warehouse may ship a damaged product
+										<p><span class="image secondary"><img src = "images/Online Slaes WH Returns.png" alt="" l></span></p>
+										<br>No certain warehouse damaged items with an increased rate before shipping as returned items are evenly distributed between warehouses.
+										<p> </p>
+
+									<h4>4-4-3 Shipment Provider Returns</h4>
+										<br>Damages, delays or even underperforming
+										<p><span class="image secondary"><img src="images/online Sales SP Returns.png" alt="" /></span></p>
+										<br>Returned items are distributed even between shipping providers, hence no signs of a certain shipping provider delivering products with damages nor the behaviour of shipping employees is inappropriate.
+										<p> </p>
+									
+							<h2>5 Findings</h2>
+								<h3>5-1 Product Performance</h3>
+								<br>All products performed the same when it comes to quantity sold and revenue generated despite being different in sizes, usage and production cost, reason is the same average price for all products.
+								<p> </p>
+
+								<h3>5-2 Sales trends</h3>
+								<br>Visualizing the count of purchases against day hours, days, weeks, month and quarter did not show any signs of purchasing trends, all purchasing patterns are stable.
+								<p> </p>
+
+								<h3>5-3 Customer Analysis</h3>
+								<br>Customers are evenly distributed between the 12 countries within the data.
+								<br>No customer preference for payment method nor sales channel.
+								<p> </p>
+
+								<h3>5-4 Returns Analysis</h3>
+								<br>No certain warehouse damaged items with an increased rate before shipping as returned items are evenly distributed between warehouses.
+								<br>No product was returned at a noticeable higher rate than other products, that means no production flaws that made a certain product defective.
+								<br>Returned items are distributed even between shipping providers, hence no signs of a certain shipping provider delivering products with damages nor the behaviour of shipping employees is inappropriate.
+								<p> </p>
+
+
+
+
+								<h2>6 Implications</h2>
+								<h3>6-1 Product Performance</h3>
+								<br>The uniform performance despite the differences between products implies that pricing strategy is the key and it suggests that the average price being the same might be a key driving equal performance across diverse products.
+								<br>Pricing strategy should be investigated to decide whether same pricing is more effective toward the best performance or the differentiated pricing based on product characteristics.
+								<p> </p>
+
+								<h3>6-2 Sales trends</h3>
+								<br>Stable purchasing patterns across time frames suggests a stable customers behaviour which indicates a mature market where consumer habits are not affected with external factors.
+								<p> </p>
+
+								<h3>6-3 Customer Analysis</h3>
+								<br>Even distribution across the 12 countries suggests the wide geographical reach, it may implies a strong global distributing brand.
+								<br>The equal preference between sales channels and payment method implies the success of making different options of payments and sales channels of an equal value, liability and accessibility.
+								<p> </p>
+
+								<h3>6-4 Returns Analysis</h3>
+								<br>The even distribution of the returned items implies a high level in production quality, robust quality control and handling at warehouses and a reliable shipping providers with consistency in shipping services with no underperforming.
+								<p> </p>
+								<p> </p>
+
+								<br><span class = "center"><b>!!! The overall result that distribution is stable in all aspects might suggest that data is generated in a controlled environment or represents a distributer with high standards in operations and a robust efficiency beside a stable long term contracts.</b></span>
+
+
+								
+
+						</div>
+					</div>
+				<section>
+					</div>
+						<div class="col-6 col-12-medium">
+							<ul class="actions medium">
+							<li><a href="https://github.com/ramez-abdelsalam/Portfolio/blob/main/OnlineSales.ipynb" class="button">Full Python Notebook HERE</a></li>
+							<li><a href="https://github.com/ramez-abdelsalam/Portfolio/blob/main/Online%20Sales%20MySql%20Cleaning%20%26%20EDA.sql" class="button">Full MySql Script HERE</a></li>
+							<li><a href="#" class="button">Thanks for taking the time to navigate through my project</a></li>
+							
+							</ul>
+						</div>
+					
+					</div>
+				</section>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<section>
+							
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="https://www.linkedin.com/in/ramez-ellamey-b931b8a9/" class="icon brands style2 fa-linkedin"><span class="label">LinkedIn</span></a></li>
+									<li><a href="https://github.com/ramez-abdelsalam" class="icon brands style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="abdelsalam.ramez@gmail.com" class="icon solid style2 fa-envelope"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
